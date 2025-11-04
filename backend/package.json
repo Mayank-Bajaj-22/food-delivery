@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/Mayank-Bajaj-22/food-delivery/issues"
   },
-  "homepage": "https://github.com/Mayank-Bajaj-22/food-delivery#readme"
+  "homepage": "https://github.com/Mayank-Bajaj-22/food-delivery#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.3",
+    "nodemon": "^3.1.10"
+  }
 }
