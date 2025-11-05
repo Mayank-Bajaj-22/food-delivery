@@ -86,4 +86,14 @@ export const signIn = async (req, res) => {
     }
 }
 
+export const signOut = async (req, res) => {
+    try {
+        res.clearCookie("token")
+
+        return res.status(200).json({ message: "log out successfully" })
+    } catch (error) {
+        return res.status(200).json(`sign out error ${error}`)
+    }
+}
+
 // example user ne frontend me sign up button pe click kiya, phir vo monogdb me uske according ek user monogodb me banayega or monogodb ek id dega vo json web token ki help se token banayega or vo browser cookies me store karwayenge
