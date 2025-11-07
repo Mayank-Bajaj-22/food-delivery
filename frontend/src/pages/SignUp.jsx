@@ -1,8 +1,10 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom"
+import { serverUrl } from "../App";
 
 function SignUp() {
     const primaryColor = "#ff4d2d";
@@ -20,6 +22,22 @@ function SignUp() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [mobile, setMobile] = useState("")
+
+    const handleSignUp = async () => {
+        try {
+            const result = await axios.post(`${serverUrl}/api/auth/signup`, {
+                fullName,
+                email,
+                mobile,
+                password,
+                role,
+            }, { withCredentials: true })
+
+            console.log(result);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div
@@ -80,7 +98,7 @@ function SignUp() {
                     </div>
                 </div>
 
-                <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`}>
+                <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSignUp}>
                     Sign Up
                 </button>
 
@@ -90,7 +108,7 @@ function SignUp() {
                     <hr className="flex-grow border-gray-300" />
                 </div> 
 
-                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-200 hover:bg-gray-100 cursor-pointer">
+                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer">
                     <FcGoogle size={20} />
                     <span>Sign up with Google</span>
                 </button>
