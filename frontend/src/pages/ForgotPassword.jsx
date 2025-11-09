@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import axios from "axios";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom"
+import { serverUrl } from '../App';
 
 function ForgotPassword() {
 
@@ -14,6 +16,42 @@ function ForgotPassword() {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const navigate = useNavigate()
+
+    const handleSendOtp = async (req, res) => {
+        try {
+            const result = await axios.post(`${serverUrl}/api/auth/send-otp`, { email }, { withCredentials: true })
+            console.log(result)
+
+            setStep(2)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleVerifyOtp = async (req, res) => {
+        try {
+            const result = await axios.post(`${serverUrl}/api/auth/verify-otp`, { email, otp }, { withCredentials: true })
+            console.log(result)
+
+            setStep(3)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleResetPassword = async (req, res) => {
+        if (newPassword != confirmPassword) {
+            return null
+        }
+        try {
+            const result = await axios.post(`${serverUrl}/api/auth/reset-password`, { email, newPassword }, { withCredentials: true })
+            console.log(result)
+
+            navigate("/signin")
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className='flex w-full items-center justify-center min-h-screen p-4 bg-[#fff9f6]'>
@@ -34,7 +72,7 @@ function ForgotPassword() {
                             <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} />
                         </div>
 
-                        <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`}>
+                        <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSendOtp}>
                             Send OTP
                         </button>
                     </div>
@@ -48,10 +86,10 @@ function ForgotPassword() {
 
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">OTP</label>
-                            <input placeholder="Enter OTP" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={otp} />
+                            <input placeholder="Enter OTP" type="number" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setOtp(e.target.value)} value={otp} />
                         </div>
 
-                        <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`}>
+                        <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleVerifyOtp}>
                             Verify OTP
                         </button>
                     </div>
@@ -73,7 +111,7 @@ function ForgotPassword() {
                             <input placeholder="Enter Confirm Password" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} />
                         </div>
 
-                        <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`}>
+                        <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleResetPassword}>
                             Reset Password
                         </button>
                     </div>
