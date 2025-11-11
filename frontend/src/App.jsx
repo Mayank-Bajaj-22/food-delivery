@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import ForgotPassword from './pages/ForgotPassword'
-export const serverUrl = "http://localhost:3000"
+export const serverUrl = "http://localhost:5000"
 
 function App() {
   return (

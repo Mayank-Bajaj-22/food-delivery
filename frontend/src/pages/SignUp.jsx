@@ -5,6 +5,8 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom"
 import { serverUrl } from "../App";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase";
 
 function SignUp() {
     const primaryColor = "#ff4d2d";
@@ -39,6 +41,26 @@ function SignUp() {
         }
     }
 
+    const handleGoogleAuth = async () => {
+        if(!mobile) {
+            return alert("Mobile no. is required")
+        }
+        const provider = new GoogleAuthProvider()
+        const result = await signInWithPopup(auth, provider)
+        console.log(result)
+
+        try {
+            const { data } = await axios.post(`${serverUrl}/api/auth/google-auth`, {
+                fullName: result.user.displayName,
+                email: result.user.email,
+                role,
+                mobile
+            }, { withCredentials: true })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div
             className="min-h-screen flex items-center justify-center p-4"
@@ -54,21 +76,21 @@ function SignUp() {
 
                 <div className="mb-4">
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Full Name</label>
-                    <input placeholder="Enter Your Full Name" type="text" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setFullName(e.target.value)} value={fullName} />
+                    <input placeholder="Enter Your Full Name" type="text" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setFullName(e.target.value)} value={fullName} required />
                 </div>
 
                 {/* email */}
 
                 <div className="mb-4">
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Email</label>
-                    <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} />
+                    <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} required />
                 </div>
 
                 {/* mobile */}
 
                 <div className="mb-4">
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Mobile</label>
-                    <input placeholder="Enter Your Mobile No." type="number" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setMobile(e.target.value)} value={mobile} />
+                    <input placeholder="Enter Your Mobile No." type="number" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setMobile(e.target.value)} value={mobile} required />
                 </div>
 
                 {/* password */}
@@ -76,7 +98,7 @@ function SignUp() {
                 <div className="mb-4">
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Password</label>
                     <div className="relative">
-                        <input placeholder="Enter Your Password" type={`${showPassword?"password":"text"}`} className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setPassword(e.target.value)} value={password} />
+                        <input placeholder="Enter Your Password" type={`${showPassword?"password":"text"}`} className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setPassword(e.target.value)} value={password} required />
                         <button onClick={() => setShowPassword(prev => !prev)} className="cursor-pointer absolute right-3 top-3 text-gray-500">{!showPassword?<FaRegEye />:<FaRegEyeSlash />}</button>
                     </div>
                 </div>
@@ -108,7 +130,7 @@ function SignUp() {
                     <hr className="flex-grow border-gray-300" />
                 </div> 
 
-                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer">
+                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer" onClick={handleGoogleAuth}>
                     <FcGoogle size={20} />
                     <span>Sign up with Google</span>
                 </button>

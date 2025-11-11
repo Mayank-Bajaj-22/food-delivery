@@ -5,6 +5,8 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom"
 import { serverUrl } from "../App";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase";
 
 function SignIn() {
     const primaryColor = "#ff4d2d";
@@ -32,6 +34,36 @@ function SignIn() {
         }
     }
 
+    const handleSignUp = async () => {
+            try {
+                const result = await axios.post(`${serverUrl}/api/auth/signup`, {
+                    fullName,
+                    email,
+                    mobile,
+                    password,
+                    role,
+                }, { withCredentials: true })
+    
+                console.log(result);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+    const handleGoogleAuth = async () => {
+        const provider = new GoogleAuthProvider()
+        const result = await signInWithPopup(auth, provider)
+        console.log(result)
+
+        try {
+            const { data } = await axios.post(`${serverUrl}/api/auth/google-auth`, {
+                email: result.user.email,
+            }, { withCredentials: true })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div
             className="min-h-screen flex items-center justify-center p-4"
@@ -47,7 +79,7 @@ function SignIn() {
 
                 <div className="mb-4">
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Email</label>
-                    <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} />
+                    <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} required />
                 </div>
 
                 {/* password */}
@@ -55,7 +87,7 @@ function SignIn() {
                 <div className="mb-4">
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Password</label>
                     <div className="relative">
-                        <input placeholder="Enter Your Password" type={`${showPassword?"password":"text"}`} className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setPassword(e.target.value)} value={password} />
+                        <input placeholder="Enter Your Password" type={`${showPassword?"password":"text"}`} className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setPassword(e.target.value)} value={password} required />
                         <button onClick={() => setShowPassword(prev => !prev)} className="cursor-pointer absolute right-3 top-3 text-gray-500">{!showPassword?<FaRegEye />:<FaRegEyeSlash />}</button>
                     </div>
                 </div>
@@ -74,7 +106,7 @@ function SignIn() {
                     <hr className="flex-grow border-gray-300" />
                 </div> 
 
-                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer">
+                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer" onClick={handleGoogleAuth}>
                     <FcGoogle size={20} />
                     <span>Sign in with Google</span>
                 </button>

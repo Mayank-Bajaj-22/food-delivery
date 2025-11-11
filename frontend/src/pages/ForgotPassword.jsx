@@ -69,7 +69,7 @@ function ForgotPassword() {
 
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">Email</label>
-                            <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} />
+                            <input placeholder="Enter Your Email" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setEmail(e.target.value)} value={email} required />
                         </div>
 
                         <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSendOtp}>
@@ -86,7 +86,7 @@ function ForgotPassword() {
 
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-1" htmlFor="fullName">OTP</label>
-                            <input placeholder="Enter OTP" type="number" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setOtp(e.target.value)} value={otp} />
+                            <input placeholder="Enter OTP" type="number" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setOtp(e.target.value)} value={otp} required />
                         </div>
 
                         <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleVerifyOtp}>
@@ -103,12 +103,12 @@ function ForgotPassword() {
 
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-1" htmlFor="newPassword">New Password</label>
-                            <input placeholder="Enter New Password" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setNewPassword(e.target.value)} value={newPassword} />
+                            <input placeholder="Enter New Password" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setNewPassword(e.target.value)} value={newPassword} required />
                         </div>
 
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-1" htmlFor="confirmPassword">Confirm Password</label>
-                            <input placeholder="Enter Confirm Password" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} />
+                            <input placeholder="Enter Confirm Password" type="email" className="w-full border rounded-lg px-3 py-2 focus:outline-none" style={{ border: `1px solid ${borderColor}`}} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} required />
                         </div>
 
                         <button className = {`w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleResetPassword}>
